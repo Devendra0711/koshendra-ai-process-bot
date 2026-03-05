@@ -2,17 +2,27 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const routes = require("./routes");
-const connectDB = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 
 const app = express();
 
-// Connect to MongoDB
-connectDB();
-
 // Middleware
-app.use(cors());
+const allowedOrigins = process.env.ALLOWED_ORIGINS 
+  ? process.env.ALLOWED_ORIGINS.split(',') 
+  : ['http://localhost:7025', 'http://localhost:5173'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+}));
 app.use(express.json());
 
 // Debug - test route BEFORE other routes
@@ -40,8 +50,11 @@ app.use("/api", routes);
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, "../client/dist")));
   
-  app.get("/*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
+  // SPA fallback — serve index.html for any non-API route
+  app.get("*", (req, res) => {
+    if (!req.path.startsWith('/api')) {
+      res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
+    }
   });
 }
 

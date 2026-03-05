@@ -4,7 +4,7 @@ const logger = require("../utils/logger");
 
 async function handleAsk(req, res) {
   const startTime = Date.now();
-  const { question } = req.body;
+  const { question, conversationHistory = [] } = req.body;
 
   try {
     if (!question || typeof question !== "string") {
@@ -12,13 +12,14 @@ async function handleAsk(req, res) {
     }
 
     logger.log(`\n📝 Question received: "${question}"`);
+    logger.log(`📜 Conversation history: ${conversationHistory.length} messages`);
 
     // Search knowledge base
     const relevantDocs = knowledgeService.searchKnowledge(question);
     logger.log(`📚 Found ${relevantDocs.length} relevant documents`);
 
-    // Get AI response - use askAI instead of getAnswer
-    const answer = await aiService.askAI(question);
+    // Get AI response with context and history
+    const answer = await aiService.askAI(question, conversationHistory);
     const duration = Date.now() - startTime;
 
     logger.log(`✅ Answer generated in ${duration}ms\n`);

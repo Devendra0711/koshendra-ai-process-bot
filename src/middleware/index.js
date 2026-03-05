@@ -1,8 +1,7 @@
 const rateLimiter = require("./rateLimiter");
-const {validateQuestion} = require("./validator");
+const { validateQuestion } = require("./validator");
 
-module.exports ={
-    rateLimiter,
-    validateQuestion
-
-}
+module.exports = {
+  rateLimiter,
+  validateQuestion,
+};

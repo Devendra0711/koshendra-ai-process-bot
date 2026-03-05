@@ -1,0 +1,152 @@
+.product-detail-view {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  background: #f9fafb;
+}
+
+.not-found {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.not-found h2 {
+  color: #6b7280;
+  margin-bottom: 16px;
+}
+
+.not-found a {
+  color: #6366f1;
+  text-decoration: none;
+}
+
+.detail-header {
+  margin-bottom: 32px;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #6366f1;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 16px;
+}
+
+.back-btn:hover {
+  text-decoration: underline;
+}
+
+.product-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.product-icon {
+  font-size: 3rem;
+}
+
+.product-info h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.product-info p {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 16px;
+}
+
+.modules-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 800px;
+}
+
+.module-card {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.module-card.expanded {
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.module-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.module-header:hover {
+  background: #f9fafb;
+}
+
+.module-icon {
+  font-size: 1.25rem;
+}
+
+.module-name {
+  flex: 1;
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.expand-icon {
+  color: #9ca3af;
+  font-size: 0.8rem;
+}
+
+.questions-list {
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.question-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px 12px 48px;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.question-item:last-child {
+  border-bottom: none;
+}
+
+.question-item:hover {
+  background: #e0e7ff;
+}
+
+.question-icon {
+  font-size: 1rem;
+}
+
+.question-title {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.arrow {
+  color: #6366f1;
+  font-weight: 500;
+}

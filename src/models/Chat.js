@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 
 const messageSchema = new mongoose.Schema({
-  type: {
+  role: {
     type: String,
     enum: ['user', 'assistant'],
-    required: true
+    required: false
   },
   content: {
     type: String,
-    required: true
+    required: false
   },
   timestamp: {
     type: Date,
@@ -17,38 +17,19 @@ const messageSchema = new mongoose.Schema({
 });
 
 const chatSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
   title: {
     type: String,
     default: 'New Chat'
   },
-  messages: [messageSchema],
-  createdAt: {
-    type: Date,
-    default: Date.now
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    index: true
   },
-  updatedAt: {
-    type: Date,
-    default: Date.now
-  }
+  messages: [messageSchema]
+}, {
+  timestamps: true
 });
-
-// Update the updatedAt timestamp before saving
-chatSchema.pre('save', function() {
-  this.updatedAt = Date.now();
-});
-
-// Auto-generate title from first user message
-chatSchema.methods.generateTitle = function() {
-  const firstUserMessage = this.messages.find(m => m.type === 'user');
-  if (firstUserMessage) {
-    // Take first 50 characters of the first message
-    this.title = firstUserMessage.content.substring(0, 50) + (firstUserMessage.content.length > 50 ? '...' : '');
-  }
-};
 
 module.exports = mongoose.model('Chat', chatSchema);

@@ -14,4 +14,6 @@ router.get("/documents", documentsController.getDocuments);
 // Ask endpoint
 router.post("/ask", askController.handleAsk);
 
+// Note: Chat routes are handled by chatRoutes.js mounted at /api/chats in app.js
+
 module.exports = router;

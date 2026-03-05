@@ -1,19 +1,23 @@
+const { json } = require('express');
 const Chat = require('../models/Chat');
 
 // Create new chat
 async function createChat(req, res) {
   try {
+    const title = req.body.title || 'New Chat';
+    console.log('Creating chat - received title:', req.body.title);
+    console.log('Creating chat - using title:', title);
+    
     const chat = new Chat({
       userId: req.userId,
-      title: 'New Chat',
+      title: title,
       messages: []
     });
     await chat.save();
+    console.log('Chat saved:', chat);
     
-    res.status(201).json({
-      success: true,
-      chat
-    });
+    // Return chat directly for frontend compatibility
+    res.status(201).json(chat);
   } catch (error) {
     console.error('Create chat error:', error);
     res.status(500).json({
@@ -27,13 +31,11 @@ async function createChat(req, res) {
 async function getUserChats(req, res) {
   try {
     const chats = await Chat.find({ userId: req.userId })
-      .select('title createdAt updatedAt')
+      .select('title messages createdAt updatedAt')
       .sort({ updatedAt: -1 });
     
-    res.json({
-      success: true,
-      chats
-    });
+    // Return array directly for frontend compatibility
+    res.json(chats);
   } catch (error) {
     console.error('Get chats error:', error);
     res.status(500).json({
@@ -94,6 +96,8 @@ async function addMessage(req, res) {
     if (chat.messages.length === 1 && type === 'user') {
       chat.generateTitle();
     }
+
+    console.log("=============",JSON.stringify(chat, null, 2));
     
     await chat.save();
     
