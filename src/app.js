@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
 const routes = require("./routes");
 const authRoutes = require('./routes/authRoutes');
 const chatRoutes = require('./routes/chatRoutes');
@@ -25,16 +24,15 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Debug - test route BEFORE other routes
-app.get("/test", (req, res) => {
-  const docs = knowledgeService.loadKnowledgeBase();
-    res.json({ count: docs.length });
-});
-
 // Debug middleware - log all requests
 app.use((req, res, next) => {
   console.log(`[DEBUG] ${req.method} ${req.path}`);
   next();
+});
+
+// Health check at root level for render 
+app.get("/health", (re, res) => {
+  res.json({status: "ok"})
 });
 
 // Auth routes
@@ -46,16 +44,5 @@ app.use('/api/chats', chatRoutes);
 // API routes
 app.use("/api", routes);
 
-// Serve Vue frontend (only in production)
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, "../client/dist")));
-  
-  // SPA fallback — serve index.html for any non-API route
-  app.get("/{*splat}", (req, res) => {
-    if (!req.path.startsWith('/api')) {
-      res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
-    }
-  });
-}
 
 module.exports = app;
